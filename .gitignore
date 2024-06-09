@@ -109,6 +109,10 @@ dist
 
 # Serverless directories
 .serverless/
+.netlify/
+
+deno.lock
+pnpm-lock.yaml
 
 # FuseBox cache
 .fusebox/

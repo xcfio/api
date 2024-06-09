@@ -1,0 +1,26 @@
+{
+    "name": "express",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "type": "commonjs",
+    "author": "xcfio",
+    "license": "MIT",
+    "scripts": {
+        "dev": "nodemon --ext .ts,.cts,.mts,.json --watch src --exec tsx --no-deprecation src/index.ts",
+        "test": "nodemon --ext .ts,.cts,.mts,.json --watch src --exec tsc --noEmit",
+        "build": "esbuild src/index.ts --bundle --outfile=index.js --platform=node --packages=external",
+        "start": "node index.js"
+    },
+    "dependencies": {
+        "@netlify/functions": "^2.7.0",
+        "cors": "^2.8.5",
+        "express": "^4.19.2",
+        "serverless-http": "^3.2.0"
+    },
+    "devDependencies": {
+        "@types/cors": "^2.8.17",
+        "@types/express": "^4.17.21",
+        "tsx": "^4.14.1"
+    }
+}

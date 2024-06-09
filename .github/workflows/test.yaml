@@ -1,0 +1,41 @@
+name: Code Check
+
+on:
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            # Setup Action
+            - name: Setup Action
+              uses: actions/checkout@v3
+
+            # Setup Node.JS
+            - name: Setup Node.JS
+              uses: actions/setup-node@v2
+              with:
+                  node-version: "22"
+
+            # Setup PNPM
+            - name: Setup PNPM
+              uses: pnpm/action-setup@v2
+              with:
+                  version: latest
+
+            # Create blank config
+            - name: Create blank config
+              run: node --eval "require('node:fs').writeFileSync('src/config.ts', 'export default {} as any')"
+
+            # Install dependencies
+            - name: Install dependencies
+              run: pnpm install --no-frozen-lockfile
+
+            # Run test
+            - name: Run test
+              run: tsc --noEmit
