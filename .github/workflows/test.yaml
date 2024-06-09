@@ -28,10 +28,6 @@ jobs:
               with:
                   version: latest
 
-            # Create blank config
-            - name: Create blank config
-              run: node --eval "require('node:fs').writeFileSync('src/config.ts', 'export default {} as any')"
-
             # Install dependencies
             - name: Install dependencies
               run: pnpm install --no-frozen-lockfile
