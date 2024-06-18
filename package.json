@@ -7,15 +7,14 @@
     "author": "xcfio",
     "license": "MIT",
     "scripts": {
-        "dev": "nodemon --ext .ts,.cts,.mts,.json --watch src --exec tsx --no-deprecation src/index.ts",
-        "test": "nodemon --ext .ts,.cts,.mts,.json --watch src --exec tsc --noEmit",
-        "build": "esbuild src/index.ts --bundle --outfile=index.js --platform=node --packages=external",
-        "start": "node index.js"
+        "dev": "netlify dev",
+        "test": "tsc --watch --noEmit"
     },
     "dependencies": {
         "@netlify/functions": "^2.7.0",
         "cors": "^2.8.5",
         "express": "^4.19.2",
+        "jsonwebtoken": "^9.0.2",
         "serverless-http": "^3.2.0"
     },
     "devDependencies": {
