@@ -3,4 +3,5 @@ import serverless from "serverless-http"
 import express from "express"
 import cors from "cors"
 
-export const handler = serverless(express().use(cors(), router()))
+export const app = express().use(cors()).use(express.json()).use(router())
+export const handler = serverless(app)
