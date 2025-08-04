@@ -10,11 +10,18 @@
         "test": "tsc --noEmit"
     },
     "dependencies": {
+        "@fastify/rate-limit": "^10.3.0",
+        "@netlify/functions": "^4.1.9",
+        "drizzle-orm": "^0.44.4",
         "fastify": "^5.4.0",
+        "ioredis": "^5.7.0",
+        "postgres": "^3.4.7",
         "serverless-http": "^3.2.0",
-        "@netlify/functions": "^4.1.9"
+        "uuid": "^11.1.0"
     },
     "devDependencies": {
-        "@types/node": "^24.0.10"
+        "@types/node": "^24.0.10",
+        "@types/uuid": "^10.0.0",
+        "drizzle-kit": "^0.31.4"
     }
 }
