@@ -1,0 +1,20 @@
+{
+    "name": "netlify",
+    "version": "1.0.0",
+    "main": "index.js",
+    "type": "commonjs",
+    "author": "xcfio",
+    "license": "MIT",
+    "scripts": {
+        "dev": "netlify dev --port=7200 --no-open",
+        "test": "tsc --noEmit"
+    },
+    "dependencies": {
+        "fastify": "^5.4.0",
+        "serverless-http": "^3.2.0",
+        "@netlify/functions": "^4.1.9"
+    },
+    "devDependencies": {
+        "@types/node": "^24.0.10"
+    }
+}
