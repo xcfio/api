@@ -1,4 +1,4 @@
-import { pgTable, uuid, varchar, jsonb, check } from "drizzle-orm/pg-core"
+import { char, check, jsonb, varchar, uuid, pgTable } from "drizzle-orm/pg-core"
 import { RoutineData } from "../type"
 import { sql } from "drizzle-orm"
 import { v7 } from "uuid"
@@ -10,10 +10,10 @@ export const routine = pgTable(
             .unique()
             .primaryKey()
             .$defaultFn(() => v7()),
-        year: varchar("year", { length: 4 })
+        year: char("year", { length: 4 })
             .notNull()
             .$defaultFn(() => new Date().getFullYear().toString()),
-        code: varchar("code", { length: 6 }).notNull(),
+        code: char("code", { length: 6 }).notNull(),
         load: varchar("load").notNull(),
         class: jsonb("class").$type<RoutineData["class"]>().notNull(),
         teacher: jsonb("teacher").$type<RoutineData["teacher"]>().notNull()
