@@ -17,7 +17,7 @@ export default async () => {
         console.log("Redis error:", err)
     })
 
-    const fastify = Fastify({ logger: { file: "./log.json" } })
+    const fastify = Fastify({ logger: process.env.NODE_ENV === "development" ? { file: "./log" } : true })
     await fastify.register(RateLimit, { redis, max: 20, timeWindow: 60000 })
     await fastify.register(Cors, {
         methods: ["GET", "POST", "PUT"],

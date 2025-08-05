@@ -1,6 +1,7 @@
 declare global {
     namespace NodeJS {
         interface ProcessEnv {
+            NODE_ENV: "development" | "production"
             URI: string
             SECRET: string
             REDIS_HOST: string
