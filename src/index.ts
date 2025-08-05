@@ -6,19 +6,24 @@ import { post, put } from "./routine"
 import hostname from "../allowed-hostname.json"
 
 export default async () => {
-    const redis = new Redis({
-        host: process.env.REDIS_HOST,
-        port: parseInt(process.env.REDIS_PORT),
-        username: process.env.REDIS_USERNAME,
-        password: process.env.REDIS_PASSWORD
-    })
-
-    redis.on("error", (err) => {
-        console.log("Redis error:", err)
-    })
-
     const fastify = Fastify({ logger: process.env.NODE_ENV === "development" ? { file: "./log.json" } : true })
-    await fastify.register(RateLimit, { redis, max: 20, timeWindow: 60000 })
+
+    const { REDIS_HOST, REDIS_PASSWORD, REDIS_PORT, REDIS_USERNAME } = process.env
+    if (REDIS_HOST && REDIS_PASSWORD && REDIS_PORT && REDIS_USERNAME) {
+        await fastify.register(RateLimit, {
+            max: 20,
+            timeWindow: 60000,
+            redis: new Redis({
+                host: process.env.REDIS_HOST,
+                port: parseInt(process.env.REDIS_PORT),
+                username: process.env.REDIS_USERNAME,
+                password: process.env.REDIS_PASSWORD
+            })
+        })
+    } else {
+        process.emitWarning("Redis is not configured, rate limiting will not be applied.")
+    }
+
     await fastify.register(Cors, {
         methods: ["GET", "POST", "PUT"],
         origin: (origin, cb) => {
