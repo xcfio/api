@@ -10,11 +10,7 @@ export default async () => {
 
     const { REDIS_URI } = process.env
     if (REDIS_URI) {
-        await fastify.register(RateLimit, {
-            max: 10,
-            timeWindow: 60000,
-            redis: new Redis(REDIS_URI)
-        })
+        await fastify.register(RateLimit, { max: 10, timeWindow: 60000, redis: new Redis(REDIS_URI) })
     } else {
         process.emitWarning("Redis is not configured, rate limiting will not be applied.")
     }
@@ -30,6 +26,16 @@ export default async () => {
 
     fastify.get("/", (_, reply) => reply.redirect("https://github.com/xcfio/api"))
     fastify.get("/status", (_, reply) => reply.code(200).send({ status: "ok" }))
+
+    const ErrorResponse = {
+        type: "object",
+        required: ["error"],
+        properties: {
+            statusCode: { type: "number" },
+            error: { type: "string" },
+            message: { type: "string" }
+        }
+    }
 
     /* CNPI Routine section */
     const ClassSchedule = {
@@ -71,6 +77,8 @@ export default async () => {
                 }
             },
             response: {
+                "4xx": ErrorResponse,
+                "5xx": ErrorResponse,
                 200: {
                     type: "object",
                     properties: {
@@ -98,18 +106,6 @@ export default async () => {
                                 }
                             }
                         }
-                    }
-                },
-                "4xx": {
-                    type: "object",
-                    properties: {
-                        error: { type: "string" }
-                    }
-                },
-                "5xx": {
-                    type: "object",
-                    properties: {
-                        error: { type: "string" }
                     }
                 }
             }
@@ -159,23 +155,13 @@ export default async () => {
                 }
             },
             response: {
+                "4xx": ErrorResponse,
+                "5xx": ErrorResponse,
                 201: {
                     type: "object",
                     properties: {
                         id: { type: "string" },
                         message: { type: "string" }
-                    }
-                },
-                "4xx": {
-                    type: "object",
-                    properties: {
-                        error: { type: "string" }
-                    }
-                },
-                "5xx": {
-                    type: "object",
-                    properties: {
-                        error: { type: "string" }
                     }
                 }
             }
@@ -185,7 +171,7 @@ export default async () => {
 
     fastify.addHook("onError", (_, reply, error) => {
         if (error.code === "FST_ERR_VALIDATION") {
-            reply.code(400).send({ error: "Bad Request", message: error.message })
+            reply.code(400).send({ statusCode: 400, error: "Bad Request", message: error.message })
             return
         }
         console.error(error)
