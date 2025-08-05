@@ -2,12 +2,9 @@ declare global {
     namespace NodeJS {
         interface ProcessEnv {
             NODE_ENV: "development" | "production"
-            URI: string
             SECRET: string
-            REDIS_HOST: string
-            REDIS_PORT: string
-            REDIS_USERNAME: string
-            REDIS_PASSWORD: string
+            REDIS_URI: string
+            DATABASE_URI: string
         }
     }
 }

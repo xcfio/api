@@ -8,17 +8,12 @@ import hostname from "../allowed-hostname.json"
 export default async () => {
     const fastify = Fastify({ logger: process.env.NODE_ENV === "development" ? { file: "./log.json" } : true })
 
-    const { REDIS_HOST, REDIS_PASSWORD, REDIS_PORT, REDIS_USERNAME } = process.env
-    if (REDIS_HOST && REDIS_PASSWORD && REDIS_PORT && REDIS_USERNAME) {
+    const { REDIS_URI } = process.env
+    if (REDIS_URI) {
         await fastify.register(RateLimit, {
-            max: 20,
+            max: 10,
             timeWindow: 60000,
-            redis: new Redis({
-                host: process.env.REDIS_HOST,
-                port: parseInt(process.env.REDIS_PORT),
-                username: process.env.REDIS_USERNAME,
-                password: process.env.REDIS_PASSWORD
-            })
+            redis: new Redis(REDIS_URI)
         })
     } else {
         process.emitWarning("Redis is not configured, rate limiting will not be applied.")
