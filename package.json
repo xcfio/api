@@ -6,10 +6,12 @@
     "author": "xcfio",
     "license": "MIT",
     "scripts": {
+        "db": "drizzle-kit studio --port=7700",
         "dev": "netlify dev --port=7200 --no-open",
         "test": "tsc --noEmit"
     },
     "dependencies": {
+        "@fastify/cors": "^11.1.0",
         "@fastify/rate-limit": "^10.3.0",
         "@netlify/functions": "^4.1.9",
         "drizzle-orm": "^0.44.4",
