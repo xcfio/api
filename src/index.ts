@@ -6,11 +6,22 @@ import { post, put } from "./routine"
 import hostname from "../allowed-hostname.json"
 
 export default async () => {
-    const fastify = Fastify({ logger: process.env.NODE_ENV === "development" ? { file: "./log.json" } : true })
+    const fastify = Fastify({
+        trustProxy: true,
+        logger: process.env.NODE_ENV === "development" ? { file: "./log.json" } : true
+    })
 
     const { REDIS_URI } = process.env
     if (REDIS_URI) {
-        await fastify.register(RateLimit, { max: 10, timeWindow: 60000, redis: new Redis(REDIS_URI) })
+        await fastify.register(RateLimit, {
+            max: 10,
+            timeWindow: 60000,
+            redis: new Redis(REDIS_URI),
+            keyGenerator: (req) => {
+                const forwarded = req.headers["x-forwarded-for"]
+                return typeof forwarded === "string" ? forwarded.split(",")[0].trim() : req.ip
+            }
+        })
     } else {
         process.emitWarning("Redis is not configured, rate limiting will not be applied.")
     }
