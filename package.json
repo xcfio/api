@@ -12,6 +12,7 @@
     },
     "dependencies": {
         "@fastify/cors": "^11.1.0",
+        "@fastify/error": "^4.2.0",
         "@fastify/rate-limit": "^10.3.0",
         "@netlify/functions": "^4.1.9",
         "drizzle-orm": "^0.44.4",
@@ -27,3 +28,4 @@
         "drizzle-kit": "^0.31.4"
     }
 }
+
