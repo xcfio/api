@@ -20,7 +20,7 @@ export default async () => {
         await fastify.register(RateLimit, {
             max: 20,
             timeWindow: 60000,
-            redis: new Redis(REDIS_URI),
+            // redis: new Redis(REDIS_URI),
             keyGenerator: (req) => {
                 const forwarded = req.headers["x-forwarded-for"]
                 return typeof forwarded === "string" ? forwarded.split(",")[0].trim() : req.ip
