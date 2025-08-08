@@ -18,7 +18,7 @@ const main = async () => {
     // const { REDIS_URI } = process.env
     // if (REDIS_URI) {
     await fastify.register(RateLimit, {
-        max: 20,
+        max: 10,
         timeWindow: 60000,
         // redis: new Redis(REDIS_URI),
         keyGenerator: (req) => {
@@ -59,6 +59,9 @@ const main = async () => {
         host: "RENDER" in process.env ? `0.0.0.0` : `localhost`,
         port: Number(process.env.PORT ?? 7200)
     })
+
+    return fastify
 }
 
 main()
+export default main
