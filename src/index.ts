@@ -2,7 +2,6 @@ import hostname from "../allowed-hostname.json"
 import RateLimit from "@fastify/rate-limit"
 import Cors from "@fastify/cors"
 import Fastify from "fastify"
-import Redis from "ioredis"
 import Routine from "./routine"
 import Vaultly from "./vaultly"
 
@@ -15,21 +14,15 @@ const main = async () => {
         }
     })
 
-    // const { REDIS_URI } = process.env
-    // if (REDIS_URI) {
+    fastify.get("/status", (_, reply) => reply.code(200).send({ status: "ok" }))
     await fastify.register(RateLimit, {
         max: 10,
         timeWindow: 60000,
-        // redis: new Redis(REDIS_URI),
         keyGenerator: (req) => {
             const forwarded = req.headers["x-forwarded-for"]
             return typeof forwarded === "string" ? forwarded.split(",")[0].trim() : req.ip
         }
     })
-    // } else {
-    //     process.emitWarning("Redis is not configured, rate limiting will not be applied.")
-    // }
-    console.log({ node: process.env.NODE_ENV })
 
     await fastify.register(Cors, {
         methods: ["GET", "POST", "PUT"],
@@ -40,12 +33,10 @@ const main = async () => {
         }
     })
 
-    fastify.get("/", (_, reply) => reply.redirect("https://github.com/xcfio/api"))
-    fastify.get("/status", (_, reply) => reply.code(200).send({ status: "ok" }))
-
     Routine(fastify)
     Vaultly(fastify)
 
+    fastify.get("/", (_, reply) => reply.redirect("https://github.com/xcfio/api"))
     fastify.addHook("onError", (_, reply, error) => {
         if (error.code === "FST_ERR_VALIDATION") {
             reply.code(400).send({ statusCode: 400, error: "Bad Request", message: error.message })
