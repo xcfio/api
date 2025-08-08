@@ -7,19 +7,17 @@
     "license": "MIT",
     "scripts": {
         "db": "drizzle-kit studio --port=7700",
-        "dev": "netlify dev --port=7200 --no-open",
+        "dev": "tsx watch --no-warnings --env-file-if-exists=.env src/index.ts",
         "test": "tsc --noEmit"
     },
     "dependencies": {
         "@fastify/cors": "^11.1.0",
         "@fastify/error": "^4.2.0",
         "@fastify/rate-limit": "^10.3.0",
-        "@netlify/functions": "^4.1.9",
         "drizzle-orm": "^0.44.4",
         "fastify": "^5.4.0",
         "ioredis": "^5.7.0",
         "postgres": "^3.4.7",
-        "serverless-http": "^3.2.0",
         "uuid": "^11.1.0"
     },
     "devDependencies": {
@@ -28,4 +26,3 @@
         "drizzle-kit": "^0.31.4"
     }
 }
-

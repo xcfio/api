@@ -6,7 +6,7 @@ import Redis from "ioredis"
 import Routine from "./routine"
 import Vaultly from "./vaultly"
 
-export default async () => {
+const main = async () => {
     const fastify = Fastify({
         trustProxy: true,
         logger: {
@@ -15,20 +15,21 @@ export default async () => {
         }
     })
 
-    const { REDIS_URI } = process.env
-    if (REDIS_URI) {
-        await fastify.register(RateLimit, {
-            max: 20,
-            timeWindow: 60000,
-            // redis: new Redis(REDIS_URI),
-            keyGenerator: (req) => {
-                const forwarded = req.headers["x-forwarded-for"]
-                return typeof forwarded === "string" ? forwarded.split(",")[0].trim() : req.ip
-            }
-        })
-    } else {
-        process.emitWarning("Redis is not configured, rate limiting will not be applied.")
-    }
+    // const { REDIS_URI } = process.env
+    // if (REDIS_URI) {
+    await fastify.register(RateLimit, {
+        max: 20,
+        timeWindow: 60000,
+        // redis: new Redis(REDIS_URI),
+        keyGenerator: (req) => {
+            const forwarded = req.headers["x-forwarded-for"]
+            return typeof forwarded === "string" ? forwarded.split(",")[0].trim() : req.ip
+        }
+    })
+    // } else {
+    //     process.emitWarning("Redis is not configured, rate limiting will not be applied.")
+    // }
+    console.log({ node: process.env.NODE_ENV })
 
     await fastify.register(Cors, {
         methods: ["GET", "POST", "PUT"],
@@ -54,5 +55,10 @@ export default async () => {
         reply.code(500).send({ error: "Internal Server Error" })
     })
 
-    return fastify
+    await fastify.listen({
+        host: "RENDER" in process.env ? `0.0.0.0` : `localhost`,
+        port: Number(process.env.PORT ?? 7200)
+    })
 }
+
+main()
