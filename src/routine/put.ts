@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply } from "fastify"
-import { RoutineData } from "../type"
-import { db, table } from "../database"
+import { db, table } from "./database"
+import { RoutineData } from "./type"
 
 export async function put(
     request: FastifyRequest<{ Querystring: { key: string; year: string }; Body: RoutineData }>,

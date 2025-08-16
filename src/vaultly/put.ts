@@ -1,6 +1,6 @@
 import { createCipheriv, createHmac, randomBytes, scryptSync } from "node:crypto"
 import { FastifyRequest, FastifyReply } from "fastify"
-import { db, table } from "../database"
+import { db, table } from "./database"
 
 export async function put(
     request: FastifyRequest<{

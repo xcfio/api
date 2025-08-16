@@ -1,6 +1,6 @@
 import { createDecipheriv, createHmac, scryptSync } from "node:crypto"
 import { FastifyRequest, FastifyReply } from "fastify"
-import { db, table } from "../database"
+import { db, table } from "./database"
 import { eq } from "drizzle-orm"
 import { validate } from "uuid"
 

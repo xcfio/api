@@ -1,4 +1,4 @@
-import { ErrorResponse } from "../type"
+import { ErrorResponse } from "../routine/type"
 import { post } from "./post"
 import { put } from "./put"
 import fn from "../"

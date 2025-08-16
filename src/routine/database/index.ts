@@ -1,8 +1,6 @@
 import { drizzle } from "drizzle-orm/postgres-js"
-import postgres from "postgres"
 import { routine } from "./routine"
-import { message } from "./message"
+import postgres from "postgres"
 
 export const db = drizzle({ client: postgres(process.env.DATABASE_URI) })
-
-export const table = { message, routine } as const
+export const table = { routine } as const
