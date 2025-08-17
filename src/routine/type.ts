@@ -1,13 +1,3 @@
-export const ErrorResponse = {
-    type: "object",
-    required: ["error"],
-    properties: {
-        statusCode: { type: "number" },
-        error: { type: "string" },
-        message: { type: "string" }
-    }
-}
-
 export type RoutineData = {
     code: `${"67" | "68" | "69" | "72" | "85" | "92"}-${"1" | "2" | "3" | "4" | "5" | "6" | "7"}${"A" | "B"}${
         | "1"

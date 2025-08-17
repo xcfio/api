@@ -4,6 +4,7 @@ import Cors from "@fastify/cors"
 import Fastify from "fastify"
 import Routine from "./routine"
 import Vaultly from "./vaultly"
+import xcfbot from "./xcfbot"
 
 const main = async () => {
     const fastify = Fastify({
@@ -35,6 +36,7 @@ const main = async () => {
 
     Routine(fastify)
     Vaultly(fastify)
+    xcfbot(fastify)
 
     fastify.get("/", (_, reply) => reply.redirect("https://github.com/xcfio/api"))
     fastify.addHook("onError", (_, reply, error) => {
