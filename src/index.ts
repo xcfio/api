@@ -7,11 +7,12 @@ import Vaultly from "./vaultly"
 import xcfbot from "./xcfbot"
 
 const main = async () => {
+    const isDevelopment = process.env.NODE_ENV === "development"
     const fastify = Fastify({
         trustProxy: true,
         logger: {
             formatters: { level: (level, number) => ({ level: `${level} (${number})` }) },
-            file: process.env.NODE_ENV === "development" ? "./log.json" : undefined
+            file: isDevelopment ? "./log.json" : undefined
         }
     })
 
@@ -29,7 +30,10 @@ const main = async () => {
         methods: ["GET", "POST", "PUT"],
         origin: (origin, cb) => {
             if (!origin) return cb(null, true)
+
+            if (isDevelopment && !isNaN(parseInt(new URL(origin).hostname.split(".").join("")))) return cb(null, true)
             if (hostname.includes(new URL(origin).hostname)) return cb(null, true)
+
             cb(new Error("Not allowed"), false)
         }
     })
