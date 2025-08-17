@@ -1,3 +1,4 @@
+import { isFastifyError } from "./function"
 import hostname from "../allowed-hostname.json"
 import RateLimit from "@fastify/rate-limit"
 import Cors from "@fastify/cors"
@@ -44,18 +45,28 @@ const main = async () => {
 
     fastify.get("/", (_, reply) => reply.redirect("https://github.com/xcfio/api"))
     fastify.addHook("onError", (_, reply, error) => {
-        if (error.code === "FST_ERR_VALIDATION") {
-            reply.code(400).send({ statusCode: 400, error: "Bad Request", message: error.message })
-            return
+        if (isFastifyError(error)) {
+            if (error.code === "FST_ERR_VALIDATION") {
+                return reply.code(400).send({ statusCode: 400, error: "Bad Request", message: error.message })
+            } else {
+                throw error
+            }
+        } else {
+            console.trace(error)
+            return reply.code(500).send({ error: "Internal Server Error" })
         }
-        console.error(error)
-        reply.code(500).send({ error: "Internal Server Error" })
     })
 
     await fastify.listen({
         host: "RENDER" in process.env ? `0.0.0.0` : `localhost`,
         port: Number(process.env.PORT ?? 7200)
     })
+
+    console.log(
+        `Server listening at http://${"RENDER" in process.env ? `0.0.0.0` : `localhost`}:${Number(
+            process.env.PORT ?? 7200
+        )}`
+    )
 
     return fastify
 }
