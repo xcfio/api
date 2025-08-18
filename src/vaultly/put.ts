@@ -1,18 +1,10 @@
 import { createCipheriv, createHmac, randomBytes, scryptSync } from "node:crypto"
 import { FastifyRequest, FastifyReply } from "fastify"
+import { Static } from "@sinclair/typebox"
 import { db, table } from "./database"
+import { PutBody } from "./type"
 
-export async function put(
-    request: FastifyRequest<{
-        Body: {
-            key: string
-            message: string
-            expires?: string | null
-            one_time?: boolean | null
-        }
-    }>,
-    reply: FastifyReply
-) {
+export async function put(request: FastifyRequest<{ Body: Static<typeof PutBody> }>, reply: FastifyReply) {
     try {
         const { key, message, expires = null, one_time = false } = request.body
         const hmac = createHmac("sha512", process.env.SECRET).update(key).digest("hex")

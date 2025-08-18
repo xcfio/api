@@ -1,3 +1,5 @@
+import { Type } from "@sinclair/typebox"
+
 declare global {
     namespace NodeJS {
         interface ProcessEnv {
@@ -8,12 +10,9 @@ declare global {
     }
 }
 
-export const ErrorResponse = {
-    type: "object",
-    required: ["error"],
-    properties: {
-        statusCode: { type: "number" },
-        error: { type: "string" },
-        message: { type: "string" }
-    }
-}
+export const ErrorResponse = Type.Object({
+    statusCode: Type.Number(),
+    error: Type.String(),
+    message: Type.String(),
+    details: Type.Optional(Type.Any())
+})

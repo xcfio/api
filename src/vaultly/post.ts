@@ -1,18 +1,12 @@
 import { createDecipheriv, createHmac, scryptSync } from "node:crypto"
 import { FastifyRequest, FastifyReply } from "fastify"
+import { Static } from "@sinclair/typebox"
 import { db, table } from "./database"
+import { PostBody } from "./type"
 import { eq } from "drizzle-orm"
 import { validate } from "uuid"
 
-export async function post(
-    request: FastifyRequest<{
-        Body: {
-            id: string
-            key: string
-        }
-    }>,
-    reply: FastifyReply
-) {
+export async function post(request: FastifyRequest<{ Body: Static<typeof PostBody> }>, reply: FastifyReply) {
     try {
         const { id, key } = request.body
 
