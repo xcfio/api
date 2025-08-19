@@ -43,8 +43,8 @@ export default function Routine(fastify: Awaited<ReturnType<typeof fn>>) {
                 }
             },
             response: {
-                "4xx": ErrorResponse,
-                "5xx": ErrorResponse,
+                //"4xx": ErrorResponse,
+                //"5xx": ErrorResponse,
                 200: {
                     type: "object",
                     properties: {
@@ -121,8 +121,8 @@ export default function Routine(fastify: Awaited<ReturnType<typeof fn>>) {
                 }
             },
             response: {
-                "4xx": ErrorResponse,
-                "5xx": ErrorResponse,
+                //"4xx": ErrorResponse,
+                //"5xx": ErrorResponse,
                 201: {
                     type: "object",
                     properties: {
