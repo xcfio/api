@@ -49,7 +49,7 @@ export const PostBody = Type.Object({
     group: Type.String()
 })
 
-export const PostResponse = Type.Object({
+export const RoutineData = Type.Object({
     code: CodeType,
     load: Type.String(),
     class: Type.Object({
@@ -74,26 +74,6 @@ export const PutQuery = Type.Object({
     year: Type.Optional(Type.String())
 })
 
-export const PutBody = Type.Object({
-    code: CodeType,
-    load: Type.String(),
-    class: Type.Object({
-        Sunday: DailySchedule,
-        Monday: DailySchedule,
-        Tuesday: DailySchedule,
-        Wednesday: DailySchedule,
-        Thursday: DailySchedule
-    }),
-    teacher: Type.Array(
-        Type.Object({
-            name: Type.String(),
-            designation: Type.String(),
-            mobile: Type.String(),
-            subject: Type.String()
-        })
-    )
-})
-
 export const PutResponse = Type.Optional(
     Type.Object({
         id: Type.String(),
@@ -106,43 +86,16 @@ export const PostSchema = {
     response: {
         "4xx": ErrorResponse,
         "5xx": ErrorResponse,
-        200: PostResponse
+        200: RoutineData
     }
 }
 
 export const PutSchema = {
     querystring: PutQuery,
-    body: PutBody,
+    body: RoutineData,
     response: {
         "4xx": ErrorResponse,
         "5xx": ErrorResponse,
         201: PutResponse
     }
-}
-
-export type PostBodyType = Static<typeof PostBody>
-export type PostResponseType = Static<typeof PostResponse>
-export type PutBodyType = Static<typeof PutBody>
-
-export type RoutineData = {
-    code: `${"67" | "68" | "69" | "72" | "85" | "92"}-${"1" | "2" | "3" | "4" | "5" | "6" | "7"}${"A" | "B"}${
-        | "1"
-        | "2"}`
-    load: string
-    class: {
-        [day in "Sunday" | "Monday" | "Tuesday" | "Wednesday" | "Thursday"]: {
-            [period in "1" | "2" | "3" | "4" | "5" | "6" | "7"]: {
-                time: string
-                subject: string
-                teacher: string
-                classroom: string
-            }
-        }
-    }
-    teacher: Array<{
-        name: string
-        designation: string
-        mobile: string
-        subject: string
-    }>
 }

@@ -1,6 +1,6 @@
 import { PostSchema, PutSchema } from "./type"
-import { post } from "./post"
-import { put } from "./put"
+import { post } from "./routes/post"
+import { put } from "./routes/put"
 import fn from "../"
 
 export default function Vaultly(fastify: Awaited<ReturnType<typeof fn>>) {

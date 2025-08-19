@@ -1,11 +1,11 @@
-import { CreateError, isFastifyError } from "../function"
+import { CreateError, isFastifyError } from "../../function"
 import { FastifyRequest, FastifyReply } from "fastify"
-import { PutBody, PutQuery } from "./type"
+import { RoutineData, PutQuery } from "../type"
 import { Static } from "@sinclair/typebox"
-import { db, table } from "./database"
+import { db, table } from "../database"
 
 export async function put(
-    request: FastifyRequest<{ Querystring: Static<typeof PutQuery>; Body: Static<typeof PutBody> }>,
+    request: FastifyRequest<{ Querystring: Static<typeof PutQuery>; Body: Static<typeof RoutineData> }>,
     reply: FastifyReply
 ) {
     try {

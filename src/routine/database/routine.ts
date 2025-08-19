@@ -2,6 +2,7 @@ import { char, check, jsonb, varchar, uuid, pgTable } from "drizzle-orm/pg-core"
 import { RoutineData } from "../type"
 import { sql } from "drizzle-orm"
 import { v7 } from "uuid"
+import { Static } from "@sinclair/typebox"
 
 export const routine = pgTable(
     "routine",
@@ -15,8 +16,8 @@ export const routine = pgTable(
             .$defaultFn(() => new Date().getFullYear().toString()),
         code: char("code", { length: 6 }).notNull(),
         load: varchar("load").notNull(),
-        class: jsonb("class").$type<RoutineData["class"]>().notNull(),
-        teacher: jsonb("teacher").$type<RoutineData["teacher"]>().notNull()
+        class: jsonb("class").$type<Static<typeof RoutineData>["class"]>().notNull(),
+        teacher: jsonb("teacher").$type<Static<typeof RoutineData>["teacher"]>().notNull()
     },
     (table) => [check("code_pattern", sql`${table.code} ~ '^(67|68|69|72|85|92)-[1-7][AB][12]$'`)]
 )

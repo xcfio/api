@@ -1,8 +1,8 @@
 import { createDecipheriv, createHmac, scryptSync } from "node:crypto"
 import { FastifyRequest, FastifyReply } from "fastify"
 import { Static } from "@sinclair/typebox"
-import { db, table } from "./database"
-import { PostBody } from "./type"
+import { db, table } from "../database"
+import { PostBody } from "../type"
 import { eq } from "drizzle-orm"
 import { validate } from "uuid"
 

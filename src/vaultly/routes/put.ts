@@ -1,8 +1,8 @@
 import { createCipheriv, createHmac, randomBytes, scryptSync } from "node:crypto"
 import { FastifyRequest, FastifyReply } from "fastify"
 import { Static } from "@sinclair/typebox"
-import { db, table } from "./database"
-import { PutBody } from "./type"
+import { db, table } from "../database"
+import { PutBody } from "../type"
 
 export async function put(request: FastifyRequest<{ Body: Static<typeof PutBody> }>, reply: FastifyReply) {
     try {

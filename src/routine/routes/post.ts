@@ -1,9 +1,9 @@
-import { CreateError, isFastifyError } from "../function"
+import { CreateError, isFastifyError } from "../../function"
 import { FastifyRequest, FastifyReply } from "fastify"
 import { Static } from "@sinclair/typebox"
-import { db, table } from "./database"
+import { db, table } from "../database"
 import { and, eq } from "drizzle-orm"
-import { PostBody } from "./type"
+import { PostBody } from "../type"
 
 export async function post(request: FastifyRequest<{ Body: Static<typeof PostBody> }>, reply: FastifyReply) {
     try {
