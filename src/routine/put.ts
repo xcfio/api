@@ -1,29 +1,29 @@
+import { CreateError, isFastifyError } from "../function"
 import { FastifyRequest, FastifyReply } from "fastify"
+import { PutBody, PutQuery } from "./type"
+import { Static } from "@sinclair/typebox"
 import { db, table } from "./database"
-import { RoutineData } from "./type"
 
 export async function put(
-    request: FastifyRequest<{ Querystring: { key: string; year: string }; Body: RoutineData }>,
+    request: FastifyRequest<{ Querystring: Static<typeof PutQuery>; Body: Static<typeof PutBody> }>,
     reply: FastifyReply
 ) {
     try {
-        const { key, year } = request.query
-        if (!key) return reply.code(400).send({ error: "Key is required" })
-        if (key !== process.env.SECRET) return reply.code(403).send({ error: "Forbidden" })
-
         const routine = request.body
-        if (!routine || typeof routine !== "object") return reply.code(400).send({ error: "Invalid body" })
-        if (!routine.code || !routine.load || !routine.class || !routine.teacher) {
-            return reply.code(400).send({ error: "Missing required fields" })
-        }
+        const { key, year } = request.query
+
+        if (key !== process.env.SECRET) throw CreateError(403, "FORBIDDEN", "Forbidden")
 
         const [result] = await db
             .insert(table.routine)
             .values({ ...routine, year })
             .returning()
+
         return reply.code(201).send({ id: result.id, message: "Routine Created successfully" })
     } catch (error) {
-        console.log(error)
-        return reply.code(500).send({ error: "Internal Server Error" })
+        if (isFastifyError(error)) throw error
+
+        console.trace(error)
+        throw CreateError(500, "INTERNAL_SERVER_ERROR", "Internal Server Error")
     }
 }

@@ -1,4 +1,4 @@
-import { isFastifyError } from "./function"
+import { isFastifyError, CreateError } from "./function"
 import hostname from "../allowed-hostname.json"
 import RateLimit from "@fastify/rate-limit"
 import Cors from "@fastify/cors"
@@ -14,6 +14,11 @@ const main = async () => {
         logger: {
             formatters: { level: (level, number) => ({ level: `${level} (${number})` }) },
             file: isDevelopment ? "./log.json" : undefined
+        },
+        schemaErrorFormatter: (errors, dataVar) => {
+            const path = typeof dataVar === "string" ? dataVar : "unknown"
+            const errorMessages = errors.map((error) => error.message).join("; ")
+            return CreateError(400, "SCHEMA_VALIDATION_ERROR", `Schema validation failed for ${path}: ${errorMessages}`)
         }
     })
 
@@ -45,12 +50,8 @@ const main = async () => {
 
     fastify.get("/", (_, reply) => reply.redirect("https://github.com/xcfio/api"))
     fastify.addHook("onError", (_, reply, error) => {
-        if (isFastifyError(error)) {
-            if (error.code === "FST_ERR_VALIDATION") {
-                return reply.code(400).send({ statusCode: 400, error: "Bad Request", message: error.message })
-            } else {
-                throw error
-            }
+        if ((error instanceof Error && error.message.startsWith("Rate limit exceeded")) || isFastifyError(error)) {
+            throw error
         } else {
             console.trace(error)
             return reply.code(500).send({ error: "Internal Server Error" })
