@@ -13,6 +13,7 @@ export default function Support(fastify: Awaited<ReturnType<typeof fn>>) {
         handler: async function (request: FastifyRequest<{ Body: Static<typeof Schema.body> }>, reply: FastifyReply) {
             try {
                 const { name, email, category, subject, message } = request.body
+                const host = request.headers.host || "Unknown Host"
 
                 const payload: RESTPostAPIWebhookWithTokenJSONBody = {
                     flags: MessageFlags.IsComponentsV2,
@@ -22,14 +23,14 @@ export default function Support(fastify: Awaited<ReturnType<typeof fn>>) {
                             components: [
                                 {
                                     type: ComponentType.TextDisplay,
-                                    content: `## ${category} - ${request.hostname || "Support Request"}`
+                                    content: `## ${category} - ${subject}`
                                 },
                                 {
                                     type: ComponentType.Separator
                                 },
                                 {
                                     type: ComponentType.TextDisplay,
-                                    content: `**Name:** ${name}\n**Email:** ${email}\n**Subject:** ${subject}\n\n**Message:**\n${message}`
+                                    content: `**Name:** ${name}\n**Email:** ${email}\n**Subject:** ${subject}\n**Host:** ${host}\n\n**Message:**\n${message}`
                                 }
                             ]
                         }
