@@ -2,7 +2,7 @@ import { ComponentType, MessageFlags, RESTPostAPIWebhookWithTokenJSONBody } from
 import { CreateError, isFastifyError } from "../function"
 import { FastifyReply, FastifyRequest } from "fastify"
 import { Static } from "@sinclair/typebox"
-import { Schema } from "./type"
+import { categories, Schema } from "./type"
 import fn from "../"
 
 export default function Support(fastify: Awaited<ReturnType<typeof fn>>) {
@@ -23,7 +23,7 @@ export default function Support(fastify: Awaited<ReturnType<typeof fn>>) {
                             components: [
                                 {
                                     type: ComponentType.TextDisplay,
-                                    content: `## ${category} - ${subject}`
+                                    content: `## ${(categories as any)[category] ?? "Support"} - ${subject}`
                                 },
                                 {
                                     type: ComponentType.Separator
@@ -43,13 +43,11 @@ export default function Support(fastify: Awaited<ReturnType<typeof fn>>) {
                     method: "POST"
                 })
 
-                // Check if the Discord webhook was successful
                 if (!response.ok) {
                     console.error("Discord webhook failed:", response.status, await response.text())
                     throw CreateError(500, "WEBHOOK_FAILED", `Failed to send to Discord: ${response.status}`)
                 }
 
-                // Success! Return success response
                 return reply.status(200).send({
                     success: true,
                     message: "Support request submitted successfully"

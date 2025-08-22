@@ -1,6 +1,12 @@
 import { Type } from "@sinclair/typebox"
 import { ErrorResponse } from "../type"
 
+export const categories = {
+    feature: "Feature Request",
+    general: "General",
+    bug: "Bug Report"
+}
+
 export const Schema = {
     body: Type.Object({
         name: Type.String({
@@ -14,9 +20,10 @@ export const Schema = {
             maxLength: 255,
             description: "Valid email address"
         }),
-        category: Type.Union([Type.Literal("general"), Type.Literal("feature"), Type.Literal("bug")], {
-            description: "Message category"
-        }),
+        category: Type.Union(
+            Object.keys(categories).map((x) => Type.Literal(x)),
+            { description: "Message category" }
+        ),
         subject: Type.String({
             minLength: 5,
             maxLength: 200,
