@@ -5,7 +5,8 @@ declare global {
         interface ProcessEnv {
             NODE_ENV: "development" | "production"
             DATABASE_URI: string
-            WEBHOOK: string
+            TOKEN: string
+            CHANNEL: string
             SECRET: string
         }
     }
