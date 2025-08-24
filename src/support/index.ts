@@ -33,7 +33,7 @@ export default function Support(fastify: Awaited<ReturnType<typeof fn>>) {
                                 },
                                 {
                                     type: ComponentType.TextDisplay,
-                                    content: `**Name:** ${name}\n**Email:** ${email}\n**Subject:** ${subject}\n**Host:** ${host}\n\n**Message:**\n${message}`
+                                    content: `**Name:** ${name}\n**Email:** ${email}\n**Subject:** ${subject}\n**Origin:** ${host}\n\n**Message:**\n${message}`
                                 }
                             ]
                         }
