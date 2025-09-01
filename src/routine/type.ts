@@ -41,14 +41,6 @@ export const CodeType = Type.TemplateLiteral([
     Type.Union([Type.Literal("1"), Type.Literal("2")])
 ])
 
-export const PostBody = Type.Object({
-    year: Type.String(),
-    department: Type.String(),
-    semester: Type.String(),
-    shift: Type.String(),
-    group: Type.String()
-})
-
 export const RoutineData = Type.Object({
     code: CodeType,
     load: Type.String(),
@@ -67,6 +59,14 @@ export const RoutineData = Type.Object({
             subject: Type.String()
         })
     )
+})
+
+export const PostBody = Type.Object({
+    year: Type.String(),
+    department: Type.String(),
+    semester: Type.String(),
+    shift: Type.String(),
+    group: Type.String()
 })
 
 export const PutQuery = Type.Object({

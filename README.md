@@ -1,59 +1,49 @@
-# Netlify Fastify Serverless Starter
+# Fastify API
 
-A minimal Fastify server template for deploying serverless APIs on Netlify.
+A serverless API built with Fastify, featuring rate limiting, CORS, modular routes, and custom error handling.
 
 ## Features
 
-- ⚡️ Fastify for high-performance HTTP APIs
-- 🚀 Deployable as a Netlify Function
-- 🛠 TypeScript support
-- 🔒 Environment variable typings
+-   **Rate Limiting:** Prevents abuse by limiting requests per IP.
+-   **CORS:** Restricts origins based on a configurable whitelist.
+-   **Modular Routes:** Includes `Routine`, `Support`, `Vaultly`, and `xcfbot` modules.
+-   **Custom Error Handling:** Handles validation and internal errors gracefully.
+-   **Status Endpoint:** `/status` for health checks.
 
-## Getting Started
+## Setup
 
-### Clone the Template
+1. **Install dependencies:**
 
-You can quickly scaffold a new project using [`degit`](https://github.com/Rich-Harris/degit):
+    ```sh
+    npm install
+    ```
+
+2. **Configure environment variables:**
+
+    - `NODE_ENV` (e.g., `development` or `production`)
+    - `PORT` (default: `7200`)
+    - `RENDER` (set for deployment on Render.com)
+
+3. **Allowed Hostnames:**
+    - Edit `allowed-hostname.json` to set permitted CORS origins.
+
+## Running Locally
 
 ```sh
-pnpx degit https://github.com/xcfio/netlify my-netlify-app
-cd my-netlify-app
-pnpm install
+node --run dev
 ```
 
-### Development
+## Endpoints
 
-To run the Fastify server locally:
+-   `GET /status` — Health check
+-   `GET /` — Redirects to GitHub repo
+-   Other endpoints provided by route modules
 
-```sh
-pnpm dev
-```
+## Development
 
-### Deploy to Netlify
+-   Logging to `log.json` in development mode.
+-   Custom schema validation error formatting.
 
-Push your repository to GitHub and connect it to Netlify. Netlify will automatically detect the function in `netlify/functions/api.ts`.
+## Deployment
 
-## Project Structure
-
-```
-.
-├── netlify/
-│   └── functions/
-│       └── api.ts         # Netlify Function entrypoint
-├── src/
-│   ├── index.ts           # Fastify server definition
-│   └── type.ts            # TypeScript environment variable typings
-├── package.json
-├── tsconfig.json
-└── readme.md
-```
-
-## Environment Variables
-
-Copy `.env.example` to `.env` and fill in the required values:
-
-- `SECRET`
-
-## License
-
-[MIT](LICENSE)
+-   Listens on `0.0.0.0` if `RENDER` env is set, otherwise on `localhost`.
