@@ -1,6 +1,6 @@
 import { ErrorResponse } from "../type"
 import { auth } from "./routes/auth"
-import fn from "../"
+import fn from "../../src"
 
 export default function xcfbot(fastify: Awaited<ReturnType<typeof fn>>) {
     fastify.route({

@@ -1,12 +1,12 @@
-import { isFastifyError, ValidationErrorHandler } from "./function"
+import { isFastifyError, ValidationErrorHandler } from "../others/function"
 import hostname from "../allowed-hostname.json"
 import RateLimit from "@fastify/rate-limit"
 import Cors from "@fastify/cors"
 import Fastify from "fastify"
-import Routine from "./routine"
-import Vaultly from "./vaultly"
-import xcfbot from "./xcfbot"
-import Support from "./support"
+import Routine from "../others/routine"
+import Vaultly from "../others/vaultly"
+import xcfbot from "../others/xcfbot"
+import Support from "../others/support"
 
 const main = async () => {
     const isDevelopment = process.env.NODE_ENV === "development"

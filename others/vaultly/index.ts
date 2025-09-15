@@ -1,7 +1,7 @@
 import { PostSchema, PutSchema } from "./type"
 import { post } from "./routes/post"
 import { put } from "./routes/put"
-import fn from "../"
+import fn from "../../src"
 
 export default function Vaultly(fastify: Awaited<ReturnType<typeof fn>>) {
     fastify.route({ method: "POST", url: "/vaultly", schema: PostSchema, handler: post })
