@@ -51,7 +51,9 @@ export default function AuthGitHub(fastify: Awaited<ReturnType<typeof main>>) {
                 const githubAuthUrl = [
                     `https://github.com/login/oauth/authorize?`,
                     `client_id=${process.env.GITHUB_CLIENT_ID}&`,
-                    `redirect_uri=${encodeURIComponent(process.env.GITHUB_REDIRECT_URI || "http://localhost:7200/auth/github/callback")}&`,
+                    `redirect_uri=${encodeURIComponent(
+                        process.env.GITHUB_REDIRECT_URI || "http://localhost:7200/auth/github/callback"
+                    )}&`,
                     `scope=user:email&`,
                     `state=${state}&`,
                     `allow_signup=true`
@@ -234,7 +236,7 @@ export default function AuthGitHub(fastify: Awaited<ReturnType<typeof main>>) {
                 const jwt = fastify.jwt.sign(payload)
                 reply.setCookie("auth", jwt, {
                     signed: true,
-                    sameSite: "strict",
+                    sameSite: "none",
                     maxAge: 7 * 24 * 60 * 60,
                     path: "/"
                 })
