@@ -4,7 +4,7 @@ import { FastifyReply, FastifyRequest } from "fastify"
 import { categories, Schema } from "./type"
 import { SnowTransfer } from "snowtransfer"
 import { Static } from "@sinclair/typebox"
-import fn from "../../src"
+import { main as fn } from "../../src"
 
 const client = new SnowTransfer(process.env.TOKEN)
 

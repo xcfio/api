@@ -1,14 +1,15 @@
-import { isFastifyError, ValidationErrorHandler } from "../others/function"
-import hostname from "../allowed-hostname.json"
-import RateLimit from "@fastify/rate-limit"
-import Cors from "@fastify/cors"
+import { CreateError, isFastifyError, ValidationErrorHandler } from "./function"
+import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox"
+import { FastifyReply, FastifyRequest } from "fastify"
+import { Value } from "@sinclair/typebox/value"
+import { JWTPayload } from "./type"
 import Fastify from "fastify"
-import Routine from "../others/routine"
-import Vaultly from "../others/vaultly"
-import xcfbot from "../others/xcfbot"
-import Support from "../others/support"
+import Routes from "./routes"
+import Socket from "./socket"
+import Plugin from "./plugin"
+import Others from "./other"
 
-const main = async () => {
+export async function main() {
     const isDevelopment = process.env.NODE_ENV === "development"
     const fastify = Fastify({
         trustProxy: true,
@@ -17,38 +18,66 @@ const main = async () => {
             file: isDevelopment ? "./log.json" : undefined
         },
         schemaErrorFormatter: ValidationErrorHandler
-    })
+    }).withTypeProvider<TypeBoxTypeProvider>()
 
-    fastify.get("/status", (_, reply) => reply.code(200).send({ status: "ok" }))
-    await fastify.register(RateLimit, {
-        max: 10,
-        timeWindow: 60000,
-        keyGenerator: (req) => {
-            const forwarded = req.headers["x-forwarded-for"]
-            return typeof forwarded === "string" ? forwarded.split(",")[0].trim() : req.ip
+    fastify.get("/status", (_, reply) => reply.code(200).send("OK"))
+    await Plugin(fastify)
+
+    fastify.decorate("authenticate", async function (request: FastifyRequest, reply: FastifyReply) {
+        try {
+            const user = (await request.jwtVerify()) as JWTPayload
+
+            if (!Value.Check(JWTPayload, user)) {
+                reply.clearCookie("auth", {
+                    path: "/",
+                    signed: true,
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === "production",
+                    sameSite: "strict"
+                })
+
+                throw CreateError(401, "INVALID_TOKEN_PAYLOAD", "Invalid authentication token structure")
+            }
+
+            request.user = user
+        } catch (error) {
+            if (isFastifyError(error)) {
+                if (
+                    error.code === "FST_JWT_NO_AUTHORIZATION_IN_COOKIE" ||
+                    error.code === "FST_JWT_NO_AUTHORIZATION_IN_HEADER"
+                ) {
+                    throw CreateError(401, "NO_TOKEN", "Authentication token not provided")
+                }
+
+                if (error.code === "FST_JWT_AUTHORIZATION_TOKEN_EXPIRED") {
+                    throw CreateError(401, "TOKEN_EXPIRED", "Authentication token has expired")
+                }
+
+                if (error.code === "FST_JWT_AUTHORIZATION_TOKEN_INVALID") {
+                    throw CreateError(401, "INVALID_TOKEN", "Invalid authentication token")
+                }
+
+                reply.clearCookie("auth", {
+                    path: "/",
+                    signed: true,
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV === "production",
+                    sameSite: "strict"
+                })
+
+                throw CreateError(401, "AUTHENTICATION_FAILED", "Authentication failed")
+            } else {
+                console.trace(error)
+                throw CreateError(500, "INTERNAL_SERVER_ERROR", "Internal Server Error")
+            }
         }
     })
 
-    await fastify.register(Cors, {
-        methods: ["GET", "POST", "PUT"],
-        origin: (origin, cb) => {
-            if (!origin) return cb(null, true)
-
-            if (isDevelopment && !isNaN(parseInt(new URL(origin).hostname.split(".").join("")))) return cb(null, true)
-            if (hostname.includes(new URL(origin).hostname)) return cb(null, true)
-
-            cb(new Error("Not allowed"), false)
-        }
-    })
-
-    Routine(fastify)
-    Support(fastify)
-    Vaultly(fastify)
-    xcfbot(fastify)
-
-    fastify.get("/", (_, reply) => reply.redirect("https://github.com/xcfio/api"))
+    Routes(fastify)
+    Others(fastify)
+    fastify.get("/terms", () => "ToS?? Forget about it")
     fastify.addHook("onError", (_, reply, error) => {
-        if ((error instanceof Error && error.message.startsWith("Rate limit exceeded")) || isFastifyError(error)) {
+        if ((Error.isError(error) && error.message.startsWith("Rate limit exceeded")) || isFastifyError(error)) {
             throw error
         } else {
             console.trace(error)
@@ -66,9 +95,8 @@ const main = async () => {
             process.env.PORT ?? 7200
         )}`
     )
-
+    fastify.io.on("connection", Socket(fastify))
     return fastify
 }
 
 main()
-export default main
