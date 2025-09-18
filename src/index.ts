@@ -20,7 +20,7 @@ export async function main() {
         schemaErrorFormatter: ValidationErrorHandler
     }).withTypeProvider<TypeBoxTypeProvider>()
 
-    fastify.get("/status", (_, reply) => reply.code(200).send("OK"))
+    fastify.get("/status", { logLevel: "silent" }, (_, reply) => reply.code(200).send("OK"))
     await Plugin(fastify)
 
     fastify.decorate("authenticate", async function (request: FastifyRequest, reply: FastifyReply) {
