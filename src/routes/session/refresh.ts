@@ -136,9 +136,7 @@ export default function SessionRefresh(fastify: Awaited<ReturnType<typeof main>>
                             name: googleUser.name,
                             avatar:
                                 googleUser.picture ||
-                                `https://ui-avatars.com/api/?name=${encodeURIComponent(
-                                    googleUser.name
-                                )}&background=4285f4&color=fff`,
+                                `https://ui-avatars.com/api/?name=${encodeURIComponent(googleUser.name)}&background=4285f4&color=fff`,
                             email: googleUser.email
                         }
                         break
@@ -180,6 +178,8 @@ export default function SessionRefresh(fastify: Awaited<ReturnType<typeof main>>
 
                 reply.setCookie("auth", newJwtToken, {
                     signed: true,
+                    httpOnly: true,
+                    secure: true,
                     sameSite: "none",
                     maxAge: cookieMaxAge,
                     path: "/"
