@@ -53,8 +53,6 @@ export default function AuthGoogle(fastify: Awaited<ReturnType<typeof main>>) {
 
                 reply.setCookie("google_oauth_state", state, {
                     signed: true,
-                    httpOnly: true,
-                    secure: process.env.NODE_ENV === "production",
                     sameSite: "lax",
                     maxAge: 600,
                     path: "/"
@@ -233,8 +231,6 @@ export default function AuthGoogle(fastify: Awaited<ReturnType<typeof main>>) {
                 const jwt = fastify.jwt.sign(payload)
                 reply.setCookie("auth", jwt, {
                     signed: true,
-                    httpOnly: true,
-                    secure: process.env.NODE_ENV === "production",
                     sameSite: "strict",
                     maxAge: tokenData.expires_in,
                     path: "/"
