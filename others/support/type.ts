@@ -7,7 +7,29 @@ export const categories = {
     bug: "Bug Report"
 }
 
-export const Schema = {
+export const WishlistSchema = {
+    body: Type.Object({
+        fullName: Type.String({
+            minLength: 2,
+            maxLength: 100
+        }),
+        email: Type.String({
+            format: "email",
+            maxLength: 255,
+            description: "Valid email address"
+        })
+    }),
+    response: {
+        "4xx": ErrorResponse,
+        "5xx": ErrorResponse,
+        200: Type.Object({
+            success: Type.Boolean(),
+            message: Type.String()
+        })
+    }
+}
+
+export const SupportSchema = {
     body: Type.Object({
         name: Type.String({
             minLength: 2,
