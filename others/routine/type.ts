@@ -1,4 +1,4 @@
-import { Type, Static } from "@sinclair/typebox"
+import { Type, Static } from "typebox"
 import { ErrorResponse } from "../type"
 
 export const ClassSchedule = Type.Object({

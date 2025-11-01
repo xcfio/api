@@ -2,7 +2,7 @@ import { CreateError, isFastifyError } from "../../function"
 import { ErrorResponse, JWTPayload } from "../../type"
 import { db, table } from "../../database"
 import { main } from "../../"
-import { Type, Static } from "@sinclair/typebox"
+import { Type, Static } from "typebox"
 import { randomBytes } from "node:crypto"
 
 export const GitHubUserSchema = Type.Object({
@@ -51,7 +51,9 @@ export default function AuthGitHub(fastify: Awaited<ReturnType<typeof main>>) {
                 const githubAuthUrl = [
                     `https://github.com/login/oauth/authorize?`,
                     `client_id=${process.env.GITHUB_CLIENT_ID}&`,
-                    `redirect_uri=${encodeURIComponent(process.env.GITHUB_REDIRECT_URI || "http://localhost:7200/auth/github/callback")}&`,
+                    `redirect_uri=${encodeURIComponent(
+                        process.env.GITHUB_REDIRECT_URI || "http://localhost:7200/auth/github/callback"
+                    )}&`,
                     `scope=user:email&`,
                     `state=${state}&`,
                     `allow_signup=true`

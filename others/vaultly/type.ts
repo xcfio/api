@@ -1,4 +1,4 @@
-import { Type } from "@sinclair/typebox"
+import { Type } from "typebox"
 import { ErrorResponse } from "../type"
 export { ErrorResponse } from "../type"
 

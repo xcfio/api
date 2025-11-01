@@ -2,7 +2,7 @@ import { CreateError, isFastifyError } from "../../function"
 import { ErrorResponse, User } from "../../type"
 import { and, or, ilike, desc } from "drizzle-orm"
 import { db, table } from "../../database"
-import { Type } from "@sinclair/typebox"
+import { Type } from "typebox"
 import { main } from "../../"
 
 export default function GetUserWithoutID(fastify: Awaited<ReturnType<typeof main>>) {

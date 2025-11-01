@@ -1,4 +1,4 @@
-import { Type } from "@sinclair/typebox"
+import { Type } from "typebox"
 
 declare global {
     namespace NodeJS {

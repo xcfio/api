@@ -1,6 +1,6 @@
 import { createCipheriv, createHmac, randomBytes, scryptSync } from "node:crypto"
 import { FastifyRequest, FastifyReply } from "fastify"
-import { Static } from "@sinclair/typebox"
+import { Static } from "typebox"
 import { db, table } from "../database"
 import { PutBody } from "../type"
 

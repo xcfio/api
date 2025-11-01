@@ -1,7 +1,7 @@
 import { CreateError, isFastifyError } from "../../function"
 import { ErrorResponse, JWTPayload, Message } from "../../type"
 import { db, table } from "../../database"
-import { Type } from "@sinclair/typebox"
+import { Type } from "typebox"
 import { main } from "../../"
 import { eq, and, or, desc, lt, ne } from "drizzle-orm"
 

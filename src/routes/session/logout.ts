@@ -1,6 +1,6 @@
 import { CreateError, isFastifyError } from "../../function"
 import { ErrorResponse } from "../../type"
-import { Type } from "@sinclair/typebox"
+import { Type } from "typebox"
 import { main } from "../../"
 
 export default function SessionLogout(fastify: Awaited<ReturnType<typeof main>>) {

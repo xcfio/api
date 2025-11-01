@@ -2,7 +2,7 @@ import { char, check, jsonb, varchar, uuid, pgTable } from "drizzle-orm/pg-core"
 import { RoutineData } from "../type"
 import { sql } from "drizzle-orm"
 import { v7 } from "uuid"
-import { Static } from "@sinclair/typebox"
+import { Static } from "typebox"
 
 export const routine = pgTable(
     "routine",
