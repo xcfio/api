@@ -1,4 +1,4 @@
-import { Type, Static } from "@sinclair/typebox"
+import { Type, Static } from "typebox"
 import { Server } from "socket.io"
 import { v7 } from "uuid"
 

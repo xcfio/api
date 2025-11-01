@@ -1,7 +1,7 @@
 import { CreateError, isFastifyError, ValidationErrorHandler } from "./function"
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox"
 import { FastifyReply, FastifyRequest } from "fastify"
-import { Value } from "@sinclair/typebox/value"
+import { Value } from "typebox/value"
 import { JWTPayload } from "./type"
 import Fastify from "fastify"
 import Routes from "./routes"

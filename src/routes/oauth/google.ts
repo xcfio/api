@@ -2,7 +2,7 @@ import { CreateError, isFastifyError } from "../../function"
 import { ErrorResponse, JWTPayload } from "../../type"
 import { db, table } from "../../database"
 import { main } from "../../"
-import { Type, Static } from "@sinclair/typebox"
+import { Type, Static } from "typebox"
 import { randomBytes } from "node:crypto"
 
 export const GoogleUserSchema = Type.Object({
@@ -43,7 +43,9 @@ export default function AuthGoogle(fastify: Awaited<ReturnType<typeof main>>) {
                 const googleAuthUrl = [
                     `https://accounts.google.com/o/oauth2/v2/auth?`,
                     `client_id=${process.env.GOOGLE_CLIENT_ID}&`,
-                    `redirect_uri=${encodeURIComponent(process.env.GOOGLE_REDIRECT_URI || "http://localhost:7200/auth/google/callback")}&`,
+                    `redirect_uri=${encodeURIComponent(
+                        process.env.GOOGLE_REDIRECT_URI || "http://localhost:7200/auth/google/callback"
+                    )}&`,
                     `response_type=code&`,
                     `scope=${encodeURIComponent("openid email profile")}&`,
                     `access_type=offline&`,
@@ -216,7 +218,9 @@ export default function AuthGoogle(fastify: Awaited<ReturnType<typeof main>>) {
                             name: user.name,
                             avatar:
                                 user.picture ||
-                                `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=4285f4&color=fff`
+                                `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                                    user.name
+                                )}&background=4285f4&color=fff`
                         }
                     })
                     .returning()

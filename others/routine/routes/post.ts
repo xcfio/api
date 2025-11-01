@@ -1,6 +1,6 @@
 import { CreateError, isFastifyError } from "../../function"
 import { FastifyRequest, FastifyReply } from "fastify"
-import { Static } from "@sinclair/typebox"
+import { Static } from "typebox"
 import { db, table } from "../database"
 import { and, eq } from "drizzle-orm"
 import { PostBody } from "../type"

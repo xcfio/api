@@ -1,7 +1,7 @@
 import { CreateError, isFastifyError } from "../../function"
 import { FastifyRequest, FastifyReply } from "fastify"
 import { RoutineData, PutQuery } from "../type"
-import { Static } from "@sinclair/typebox"
+import { Static } from "typebox"
 import { db, table } from "../database"
 
 export async function put(

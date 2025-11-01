@@ -1,6 +1,6 @@
 import { uuid, pgTable, text, timestamp } from "drizzle-orm/pg-core"
 import { MessageStatus } from "../type"
-import { Static } from "@sinclair/typebox"
+import { Static } from "typebox"
 import { v7 } from "uuid"
 import { conversation } from "./conversation"
 import { user } from "./user"

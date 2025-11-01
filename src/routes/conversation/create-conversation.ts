@@ -2,7 +2,7 @@ import { Conversation, ErrorResponse, JWTPayload } from "../../type"
 import { CreateError, isFastifyError } from "../../function"
 import { db, table } from "../../database"
 import { eq, and, or } from "drizzle-orm"
-import { Type } from "@sinclair/typebox"
+import { Type } from "typebox"
 import { main } from "../../"
 
 export function CreateConversation(fastify: Awaited<ReturnType<typeof main>>) {
