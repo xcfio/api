@@ -2469,10 +2469,8 @@ async function jwt(fastify) {
 
 // src/plugin/index.ts
 async function Plugin(fastify) {
-    if (process.env.NODE_ENV === "development") {
-        await swagger(fastify)
-        await swagger_ui(fastify)
-    }
+    await swagger(fastify)
+    await swagger_ui(fastify)
     await rl(fastify)
     await socket(fastify)
     await cookie(fastify)
