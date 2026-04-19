@@ -1365,10 +1365,10 @@ function Register(fastify) {
                         )
                     )
                 if (exist) {
-                    if (exist.email === email) {
+                    if (exist.email.toLowerCase() === email.toLowerCase()) {
                         throw CreateError(409, "EMAIL_ALREADY_EXISTS", "This email is already registered")
                     }
-                    if (exist.username === username) {
+                    if (exist.username.toLowerCase() === username.toLowerCase()) {
                         throw CreateError(409, "USERNAME_ALREADY_EXISTS", "This username is already taken")
                     }
                 }
