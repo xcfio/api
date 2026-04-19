@@ -1360,8 +1360,8 @@ function Register(fastify) {
                     .from(table.users)
                     .where(
                         (0, import_drizzle_orm16.or)(
-                            (0, import_drizzle_orm16.eq)(table.users.email, email),
-                            (0, import_drizzle_orm16.eq)(table.users.username, username)
+                            (0, import_drizzle_orm16.ilike)(table.users.email, email),
+                            (0, import_drizzle_orm16.ilike)(table.users.username, username)
                         )
                     )
                 if (exist) {
@@ -1380,11 +1380,8 @@ function Register(fastify) {
                     throw CreateError(500, "USER_CREATION_FAILED", "Failed to create user account")
                 }
                 const exp = 86400
-                const payload = {
-                    id: user.id,
-                    iat: Math.floor(Date.now() / 1e3),
-                    exp: Math.floor(Date.now() / 1e3) + exp
-                }
+                const now = Math.floor(Date.now() / 1e3)
+                const payload = { id: user.id, iat: now, exp: now + exp }
                 const jwt2 = fastify.jwt.sign(payload)
                 reply2.setCookie("auth", jwt2, {
                     signed: true,
@@ -1464,8 +1461,8 @@ function Login(fastify) {
                     .from(table.users)
                     .where(
                         (0, import_drizzle_orm17.or)(
-                            (0, import_drizzle_orm17.eq)(table.users.email, input),
-                            (0, import_drizzle_orm17.eq)(table.users.username, input)
+                            (0, import_drizzle_orm17.ilike)(table.users.email, input),
+                            (0, import_drizzle_orm17.ilike)(table.users.username, input)
                         )
                     )
                 if (!user) {
@@ -1487,11 +1484,8 @@ function Login(fastify) {
                     throw CreateError(403, "INCORRECT_INPUTTED_DATA", "Incorrect username/email or password")
                 }
                 const exp = 86400
-                const payload = {
-                    id: user.id,
-                    iat: Math.floor(Date.now() / 1e3),
-                    exp: Math.floor(Date.now() / 1e3) + exp
-                }
+                const now = Math.floor(Date.now() / 1e3)
+                const payload = { id: user.id, iat: now, exp: now + exp }
                 const jwt2 = fastify.jwt.sign(payload)
                 reply2.setCookie("auth", jwt2, {
                     signed: true,
@@ -2392,8 +2386,9 @@ async function main() {
     Routes(fastify)
     Hooks(fastify)
     Others(fastify)
-    await fastify.listen({ host: "0.0.0.0", port: Number(process.env.PORT ?? 7200) })
-    console.log(`Server listening at http://localhost:7200`)
+    const port = Number(process.env.PORT ?? 7200)
+    await fastify.listen({ host: "0.0.0.0", port })
+    console.log(`Server listening at http://localhost:${port}`)
     fastify.io.on("connection", socket_default(fastify))
     io = fastify.io
     return fastify
