@@ -1419,9 +1419,11 @@ function Logout(fastify) {
         handler: async (_, reply2) => {
             try {
                 reply2.clearCookie("auth", {
-                    path: "/",
                     signed: true,
-                    sameSite: "strict"
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: "none",
+                    path: "/"
                 })
                 return reply2.send({
                     success: true,
