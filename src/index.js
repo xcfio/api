@@ -1610,7 +1610,7 @@ async function cookie(fastify) {
 var import_rate_limit = __toESM(require("@fastify/rate-limit"))
 async function rl(fastify) {
     await fastify.register(import_rate_limit.default, {
-        max: 10,
+        max: 100,
         timeWindow: 2e4,
         allowList: ["127.0.0.1"],
         keyGenerator: (req) => {
