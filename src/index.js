@@ -2378,7 +2378,6 @@ async function main() {
     const fastify = (0, import_fastify.default)({
         trustProxy: true,
         logger: {
-            formatters: { level: (level, number) => ({ level: `${level} (${number})` }) },
             file: isDevelopment ? "./log.json" : void 0
         },
         schemaErrorFormatter: ValidationErrorHandler
