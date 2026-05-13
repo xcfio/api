@@ -8,5 +8,8 @@
 # XML
 *.xml linguist-detectable=false
 
+# JS
+*.js linguist-detectable=false
+
 # HTML
 *.html linguist-detectable=false
