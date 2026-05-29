@@ -2358,15 +2358,7 @@ let io
 async function main() {
     const fastify$1 = (0, fastify.default)({
         trustProxy: true,
-        logger: {
-            transport: {
-                target: "pino-pretty",
-                options: {
-                    translateTime: "HH:MM:ss Z",
-                    ignore: "pid,hostname"
-                }
-            }
-        },
+        logger: true,
         schemaErrorFormatter: fastify_utils.ValidationErrorHandler
     }).withTypeProvider()
     await Plugin(fastify$1)
