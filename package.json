@@ -30,7 +30,7 @@
         "fastify-socket": "^5.1.4",
         "fastify-utils": "^0.0.2",
         "postgres": "^3.4.9",
-        "snowtransfer": "^0.18.0",
+        "snowtransfer": "^0.19.0",
         "typebox": "^1.1.38",
         "typescript": "^6.0.3",
         "uuid": "^14.0.0"
