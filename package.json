@@ -32,7 +32,7 @@
         "postgres": "^3.4.9",
         "snowtransfer": "^0.19.0",
         "typebox": "^1.1.38",
-        "typescript": "^6.0.3",
+        "typescript": "^7.0.2",
         "uuid": "^14.0.0"
     },
     "devDependencies": {
