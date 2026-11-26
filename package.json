@@ -28,7 +28,7 @@
         "drizzle-orm": "1.0.0-rc.5-5935859",
         "fastify": "^5.8.5",
         "fastify-socket": "^5.1.4",
-        "fastify-utils": "^0.0.2",
+        "fastify-utils": "^0.0.4",
         "postgres": "^3.4.9",
         "snowtransfer": "^0.19.0",
         "typebox": "^1.1.38",
